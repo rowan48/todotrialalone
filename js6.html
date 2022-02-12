@@ -1,0 +1,199 @@
+<!DOCTYPE html>    
+<html>    
+<head> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">   
+    <title>TODO-APP</title>    
+    <style>
+        .whole{
+            background-image: url(https://th.bing.com/th/id/R.d1dd40127769478e4d60f36da4edb509?rik=4bdl99gw9lJI%2bA&pid=ImgRaw&r=0);
+        }
+        .container{
+            width:300px;
+            margin: 0;
+            text-align: center;
+            width: 50%;
+            height: 50%;
+            padding-top: 80px;
+        }
+        #todop{
+            width: 400px;
+        }
+        .colwidth{
+            width:300px;
+        }
+        .donebtn{
+            color: darkcyan;
+        }
+        .notdonebtn{
+            color: red;
+            /*display: none;*/
+
+        }
+        #mydonebtn{
+            display: none;
+        }
+        .submitbtn{
+            background-color: darkcyan;
+        }
+        #notdonebtn{
+            display: none;  
+        }
+
+    </style>  
+</head>    
+<body class ="whole" ><!--onload="retrievedata()"-->
+    <div class ="container">
+        <div class ="mytodo">
+            <input type="text" name="todo" id="todop" placeholder="enter ur task">    
+            <button name="submit" class ="mybtn" class ="submitbtn" type="submit" onclick="addingfields()">Submit</button> 
+            <button name="submit" class ="mybtn" class ="donebtn" id ="mydonebtn" type="submit" onclick="deletefn()">Done</button>
+            <button name="submit" class ="mybtn" class ="notdonebtn" id ="notdonebtn" type="submit" onclick="editfn(e)">Edit</button>
+ 
+
+        </div>
+        <table id="mytable">
+            <thead>
+              <tr>
+                <th scope="col" class ="colwidth">Task</th>
+                <th scope="col" class ="col2width">Done</th>
+                <th scope="col" class ="col2width">Edit</th>
+
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+
+    </div>    
+
+<script>
+     var txtfield=[];
+     var task=[];
+     var txtfieldobj=[];
+     var newRow;
+     var newText;
+
+
+
+function addingfields(){
+    //console.log("testing");
+        var newfield =document.getElementById("todop").value;
+        txtfield.push(newfield);//adding tasks in txtfield array
+        //console.log(txtfield);
+        for(let i = 0; i < txtfield.length; i++) {
+            txtfieldobj[i] = {task: txtfield[i]};  //adding the tasks in obj
+        }
+        for (let count=0;count<txtfield.length;count++){
+        localStorage.setItem("task",JSON.stringify(txtfieldobj));
+        }
+        //console.log(txtfield);
+        //console.log(txtfieldobj);
+
+
+        var tbodyRef = document.getElementById('mytable').getElementsByTagName('tbody')[0];
+        // Insert a row at the end of table
+         newRow = tbodyRef.insertRow();
+        // Insert a cell at the end of the row
+         var newCell = newRow.insertCell();
+        var newCell2 = newRow.insertCell();
+        var newCell3 = newRow.insertCell();
+
+        // Append a text node to the cell
+        newText = document.createTextNode(newfield);
+        newCell.appendChild(newText);
+        ///////////////done task////////////////
+        let doneButton = document.createElement("button");
+        doneButton.className = "donebtn";
+        doneButton.appendChild(document.createTextNode("Done"));
+        newCell2.appendChild(doneButton);
+        ///////not done///////////////////////
+        let notdoneButton = document.createElement("button");
+        notdoneButton.className = "notdonebtn";
+        notdoneButton.appendChild(document.createTextNode("Edit"));
+        newCell3.appendChild(notdoneButton);
+        ////////remove the finished task////////
+        var i =0;
+        var task =[];
+        var dummy;
+        var dnebtn = document.getElementsByClassName("donebtn");
+        doneButton.onclick=function() {
+            newCell.removeChild(newText);
+            newCell2.removeChild(doneButton);
+            newCell3.removeChild(notdoneButton);
+        }
+        var editbtn=document.getElementsByClassName("notdonebtn")[0];
+        //alert(editbtn);
+            notdoneButton.onclick=function(e){
+                //var rowid=event.target.parentNode.parentNode.id;
+                //document.getElementById(rowid).querySelectorAll(".mybtn"); 
+                //var name = data[0].innerHTML;
+                //alert(name);
+                //console.log("testing");
+                console.log(e.target.value);
+                alert(e.target.parentNode.childNodes[0].data);
+
+            //alert( e.target.parentNode.value);               
+               //document.getElementById('todop').value = e.target.parentNode.childNodes[0].newText;
+               document.getElementById('todop').value.innerHTML = e.target.value;
+               //usersDiv.innerHTML=e.target.value;
+
+           
+
+        }
+        
+
+        
+        //console.log("testing");
+}
+
+/*function retrievedata(){
+    var mydata;
+  if(localStorage.getItem('task')!=null){
+    var tbodyRef = document.getElementById('mytable').getElementsByTagName('tbody')[0];
+    txtfield=JSON.parse(localStorage.getItem('task'));
+    console.log(txtfield);
+  // var str= JSON.stringify(txtfield)
+   //console.log(str);
+            for (z = 0; z < txtfield.length; z++) {
+                var newRow = tbodyRef.insertRow();
+                var newCell = newRow.insertCell();
+                var newCell2 = newRow.insertCell();
+                var newCell3 = newRow.insertCell();
+                newCell.appendChild(document.createTextNode(txtfield[z]["task"]));
+                let doneButton = document.createElement("button");
+                doneButton.className = "donebtn";
+                doneButton.appendChild(document.createTextNode("Done"));
+                newCell2.appendChild(doneButton);
+                ///////not done///////////////////////
+                let notdoneButton = document.createElement("button");
+                notdoneButton.className = "notdonebtn";
+                notdoneButton.appendChild(document.createTextNode("Edit"));
+                newCell3.appendChild(notdoneButton);
+                ////////remove the finished task////////
+                var i =0;
+                var task =[];
+                var dummy;
+                var dnebtn = document.getElementsByClassName("donebtn");
+                doneButton.onclick=function() {
+                    newCell.removeChild(newText);
+                    newCell2.removeChild(doneButton);
+                    newCell3.removeChild(notdoneButton);
+                }
+
+            }
+            var editbtn=document.getElementsByClassName("notdonebtn");
+           /* notdoneButton.onclick=function(){
+            
+               
+               document.getElementById('todop').value = e.target.parentNode;
+           
+
+        }*/
+  //}
+
+//}*/
+//console.log("testing");
+    
+</script>   
+</body>    
+</html> 

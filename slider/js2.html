@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport"  content="with=device-width ,initial-scale=1.0">
+    <style>
+        .container{
+            display: flex;
+
+        }
+        .theimages {
+            display: none;
+        }
+        #one{
+      
+            width: 150px;
+            height: 150px;
+        }
+        #two{
+
+
+            width: 200px;
+            height: 150px;
+        }
+        #three{
+            width: 200px;
+        }
+    </style>
+    
+
+</head>
+
+<body>
+    <div id ="container">
+        <div class ="theimages"style="display: block;"> <img id ="one" src="imgs/1.jpg"></div>
+        <div class="theimages"> <img id ="two" src="imgs/2.jpg"></div>
+        <div class="theimages"> <img id ="three" src="imgs/3.jpg"></div>
+
+    </div>
+    <script>
+        var slidesindex=0;
+        slider();
+        
+       function slider()
+       {
+          
+           console.log("pressed next");
+              var myimg =document.getElementsByClassName("theimages");
+              var i ;
+              console.log(myimg.length);
+              console.log(myimg);
+              for (i = 0; i < myimg.length; i++) { 
+                       myimg[i].style.display = "none"; 
+               }
+              
+               slidesindex++;
+               if (slidesindex>myimg.length-1){slidesindex=0;}
+               if (slidesindex<0){slidesindex=myimg.length-1;}
+               myimg[slidesindex].style.display = 'block';
+                  
+       }
+       setInterval(slider,2000);
+   </script>
+</body>
+
+
+</html>
